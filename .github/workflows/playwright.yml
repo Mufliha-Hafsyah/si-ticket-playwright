@@ -60,8 +60,10 @@ jobs:
       - name: Start Laravel server
         working-directory: src
         run: |
-          nohup php -S 127.0.0.1:8000 -t public > /dev/null 2>&1 &
-          sleep 3
+          php -S 127.0.0.1:8000 -t public > storage/logs/laravel.log 2>&1 &
+          echo "Menunggu server menyala..."
+          sleep 5
+          curl -f http://127.0.0.1:8000 || (echo "Server gagal nyala" && exit 1)
 
       - name: Install Playwright dependencies
         working-directory: src/playwright
